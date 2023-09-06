@@ -22,7 +22,8 @@ router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 try{
-  const productData = await Product.findOne({ id: req.params.id }, { 
+  const productData = await Product.findOne({ 
+    where: {id: req.params.id }, 
     include: [Category, Tag]
   });
   res.status(200).json(productData);
@@ -54,6 +55,7 @@ router.post('/', (req, res) => {
         return ProductTag.bulkCreate(productTagIdArr);
       }
       // if no product tags, just respond
+      console.log(req.body);
       res.status(200).json(product);
     })
     .then((productTagIds) => res.status(200).json(productTagIds))
@@ -103,7 +105,7 @@ router.put('/:id', (req, res) => {
       return res.json(product);
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
